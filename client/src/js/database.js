@@ -29,9 +29,9 @@ export const getDb = async () => {
   const allContent = await store.getAll();
   await tx.complete;
   return allContent;
+};
 
-
-initdb(); 
+initdb();
 
 // The putDb function creates a connection to the "jate" database, starts a read-write transaction on the "jate" object store, adds the content to the object store using the add method, waits for the transaction to complete using await tx.complete, and returns the id of the newly added object.
 
