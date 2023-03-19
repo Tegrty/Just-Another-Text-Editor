@@ -1,4 +1,5 @@
 # The TEGRTY-Text-Editor
+![Screenshot 2023-03-19 144246](https://user-images.githubusercontent.com/121316876/226200908-b5735d41-9a77-4825-959c-e6a2c56ac4b5.png)
 
 ## Description 📜
 
