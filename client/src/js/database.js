@@ -1,38 +1,41 @@
-import { openDB } from "idb";
-import { NoEmitOnErrorsPlugin } from "webpack";
+import { openDB } from 'idb';
 
 const initdb = async () =>
-  openDB("jate", 1, {
+  openDB('jate', 1, {
     upgrade(db) {
-      if (db.objectStoreNames.contains("jate")) {
-        console.log("jate database already exists");
+      if (db.objectStoreNames.contains('jate')) {
+        console.log('jate database already exists');
         return;
       }
-      db.createObjectStore("jate", { keyPath: "id", autoIncrement: true });
-      console.log("jate database created");
+      db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
+      console.log('jate database created');
     },
   });
 
-export const putDb = async (content) => {
-  const db = await openDB("jate", 1);
-  const tx = db.transaction("jate", "readwrite");
-  const store = tx.objectStore("jate");
-  const id = await store.add(content);
-  await tx.complete;
-  return id;
-};
+  export const putDb = async (content) => {
+    console.log('PUT to the database');
+    const textDb = await openDB('jate', 1);
+    const tx = textDb.transaction('jate', 'readwrite');
+    const store = tx.objectStore('jate');
+    const request = store.put({ id: 1, value: content });
+    const result = await request;
+    console.log('🚀 - data saved to the database', result.value);
+  };
+  
+  export const getDb = async () => {
+    console.log('GET from the database');
+    const jateDb = await openDB('jate', 1);
+    const tx = jateDb.transaction('jate', 'readonly');
+    const store = tx.objectStore('jate');
+    const request = store.get(1);
+    const result = await request;
+    result
+      ?   console.log("💲💲💲", result.value)
+      : console.log('no database found');
+    return result?.value;
+  };
+  
+  initdb();
 
-export const getDb = async () => {
-  const db = await openDB("jate", 1);
-  const tx = db.transaction("jate", "readonly");
-  const store = tx.objectStore("jate");
-  const allContent = await store.getAll();
-  await tx.complete;
-  return allContent;
-};
-
-initdb();
-
-// The putDb function creates a connection to the "jate" database, starts a read-write transaction on the "jate" object store, adds the content to the object store using the add method, waits for the transaction to complete using await tx.complete, and returns the id of the newly added object.
-
-// The getDb function also creates a connection to the "jate" database, starts a read-only transaction on the "jate" object store, retrieves all the content using the getAll method, waits for the transaction to complete using await tx.complete, and returns all the content in the "jate" object store. 
+  // console.log("💲💲💲", result.value)
+  // console.log('🚀 - data saved to the database', result);
